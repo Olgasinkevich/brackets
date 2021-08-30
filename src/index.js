@@ -9,19 +9,20 @@ module.exports = function check(str, bracketsConfig) {
         let stack = [];
         for (let i = 0; i < string.length; i++) {
             let currentSymbol = string[i];
+            let topElement = stack.length ? stack[stack.length - 1] : null;
             if (openBrackets.includes(currentSymbol)) {
-                stack.push(currentSymbol);
+                if (currentSymbol === objBracketsConfig[currentSymbol] && topElement === currentSymbol) {
+                    stack.pop();
+                } else {
+                    stack.push(currentSymbol);
+                }
             } else {
                 if (stack.length === 0) {
                     return false;
                 }
-                let topElement = stack[stack.length - 1];
                 if (objBracketsConfig[currentSymbol] === topElement) {
                     stack.pop();
                 } else {
-                    if (currentSymbol === '|') {
-                        stack.push(currentSymbol);
-                    }
                     return false;
                 }
             }
